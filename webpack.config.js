@@ -14,7 +14,7 @@ const TARGET = process.env.npm_lifecycle_event;
 const PATHS = {
 	app: path.join(__dirname, 'app'),
 	build: path.join(__dirname, 'build'),
-	style: path.join(__dirname, 'app/main.css')
+	style: path.join(__dirname, 'app/main.scss')
 };
 
 process.env.BABEL_ENV = TARGET;
@@ -39,20 +39,17 @@ process.env.BABEL_ENV = TARGET;
  	module: {
   		loaders: [
 		   {
+		   	exclude: /node_modules/,
 		   	test: /\.jsx?$/,
-		      // Enable caching for improved performance during development
-		      // It uses default OS directory by default. If you need something
-		      // more custom, pass a path to it. I.e., babel?cacheDirectory=<path>
 		      loaders: ['babel?cacheDirectory'],
-		      // Parse only app files! Without this it will go through entire project.
-		      // In addition to being slow, that will most likely result in an error.
 		      include: PATHS.app
 		   }
 		]
 	},
 	plugins: [
    	new HtmlWebpackPlugin({
-   	title: 'Webpack demo'
+   	title: 'React Project Template',
+   	template: 'template.html'
    	})
 	]
 };
@@ -60,8 +57,6 @@ process.env.BABEL_ENV = TARGET;
 //Default configuration. We will return this if 
 //Webpack is called outside of npm.
 if(TARGET === 'start' || !TARGET) {
-	// module.exports = merge(common, {});
-
 	module.exports = merge(common, {
 		devtool: 'eval-source-map',
 		devServer: {
@@ -82,16 +77,13 @@ if(TARGET === 'start' || !TARGET) {
 			//unlike default localhost
 			host: process.env.HOST,
 			port: process.env.PORT
-
-			//If you want defaults, you can use a little trick like this
-			//port: process.env.PORT || 3000
 		},
 		module: {
 	  		loaders: [
 	  			//Define development specific CSS setup
 	  			{
 	  				test: /\.css$/,
-	  				loaders: ['style', 'css'],
+	  				loaders: ['style', 'css', 'sass'],
 	  				//Include accepts either a path or an array of paths.
 	  				include: PATHS.app
 	  			}
@@ -124,8 +116,8 @@ if(TARGET === 'build' || TARGET === 'stats') {
 		module: {
 			loaders: [
 				{
-					test: /\.css$/,
-					loader: ExtractTextPlugin.extract('style', 'css'),
+					test: /\.scss$/,
+					loader: ExtractTextPlugin.extract('style', 'css', "sass"),
 					include: PATHS.app
 				}
 			]
