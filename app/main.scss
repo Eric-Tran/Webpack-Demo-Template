@@ -1,8 +1,8 @@
-$headingCol: green;
+$fontColor: white;
 $font-stack: Helvetica, sans-serif;
 
 body {
   font: $font-stack;
-  background: pink;
-  color: $headingCol;
+  background: green;
+  color: $fontColor;
 }

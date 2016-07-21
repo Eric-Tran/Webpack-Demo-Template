@@ -82,7 +82,7 @@ if(TARGET === 'start' || !TARGET) {
 	  		loaders: [
 	  			//Define development specific CSS setup
 	  			{
-	  				test: /\.css$/,
+	  				test: /\.scss$/,
 	  				loaders: ['style', 'css', 'sass'],
 	  				//Include accepts either a path or an array of paths.
 	  				include: PATHS.app
@@ -117,8 +117,8 @@ if(TARGET === 'build' || TARGET === 'stats') {
 			loaders: [
 				{
 					test: /\.scss$/,
-					loader: ExtractTextPlugin.extract('style', 'css', "sass"),
-					include: PATHS.app
+					loader: ExtractTextPlugin.extract('style', 'css!sass'),
+					include: PATHS.style
 				}
 			]
 		},
@@ -131,9 +131,6 @@ if(TARGET === 'build' || TARGET === 'stats') {
 				names: ['vendor', 'manifest']
 			}),
 			new webpack.DefinePlugin({
-				//Setting DefinePlugin affects React library size!
-				//DefinePlugin replaces content "as is" so we need some
-				//extra quotes for the generated code to make sense
 				'process.env.NODE_ENV': '"production"'
 			}),
 			new webpack.optimize.UglifyJsPlugin({
