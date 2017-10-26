@@ -39,9 +39,12 @@ process.env.BABEL_ENV = TARGET;
  	module: {
   		loaders: [
 		   {
-		   	exclude: /node_modules/,
-		   	test: /\.jsx?$/,
-		      loaders: ['babel?cacheDirectory'],
+		      exclude: /node_modules/,
+		      test: /\.jsx?$/,
+		      loader: 'babel-loader',
+		      query: {
+                         presets: ['react', 'env']
+                      },
 		      include: PATHS.app
 		   }
 		]
